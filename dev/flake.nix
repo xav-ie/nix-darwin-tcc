@@ -89,7 +89,37 @@
             grep -q 'USER_TCC_DB="/Users/alice/Library' post
             mkdir $out && cp pre post $out/
           '';
+
+          # The docs' diagrams and their README blocks are exactly what
+          # scripts/diagrams.mjs writes.
+          docs =
+            pkgs.runCommand "nix-darwin-tcc-docs"
+              {
+                nativeBuildInputs = [ pkgs.nodejs ];
+                src = pkgs.lib.fileset.toSource {
+                  root = ../.;
+                  fileset = pkgs.lib.fileset.unions [
+                    ../README.md
+                    ../assets/palette.json
+                    ../docs
+                    ../scripts/diagrams.mjs
+                  ];
+                };
+              }
+              ''
+                cp -r --no-preserve=mode $src work
+                node work/scripts/diagrams.mjs
+                diff -r $src/docs work/docs
+                diff $src/README.md work/README.md
+                touch $out
+              '';
         }
       );
+
+      devShells = forAllSystems (pkgs: {
+        default = pkgs.mkShell {
+          packages = [ pkgs.nodejs ]; # scripts/diagrams.mjs
+        };
+      });
     };
 }
