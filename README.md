@@ -41,9 +41,8 @@ security.tcc = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:nix-darwin/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    # No inputs of its own, so no `follows` needed.
     nix-darwin-tcc.url = "github:xav-ie/nix-darwin-tcc";
-    nix-darwin-tcc.inputs.nixpkgs.follows = "nixpkgs";
-    nix-darwin-tcc.inputs.nix-darwin.follows = "nix-darwin";
   };
 
   outputs = { nix-darwin, nix-darwin-tcc, ... }: {
@@ -65,7 +64,10 @@ security.tcc = {
 }
 ```
 
-The `tcc-grant` tool is also exposed on its own as `packages.<system>.tcc-grant`:
+The module builds the `tcc-grant` tool from your own nixpkgs. To use it on its
+own, add `nix-darwin-tcc.overlays.default` to your nixpkgs overlays (for
+`pkgs.tcc-grant`), or run it straight from the dev flake:
+`nix run "github:xav-ie/nix-darwin-tcc?dir=dev#tcc-grant" -- --help`.
 
 ```sh
 sudo tcc-grant --service Accessibility --bundle-id com.example.app \
@@ -123,3 +125,13 @@ re-signing has happened. When anything was written, `tccd` is reloaded so the
 new rows take effect without logging out.
 
 [nix-darwin]: https://github.com/nix-darwin/nix-darwin
+
+## Development
+
+The main flake has no inputs. Checks and a standalone `tcc-grant` build live in
+the [`dev/`](dev/flake.nix) flake, which brings nixpkgs and nix-darwin:
+
+```sh
+nix flake check ./dev
+nix build ./dev#tcc-grant
+```
