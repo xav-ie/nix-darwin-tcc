@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1062 412" width="1062" height="412" role="img"><style>
+  text { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; fill: #15201a; }
+  .bg { fill: #f3f7f4; }
+  .box { fill: #ffffff; stroke: #d2ddd6; stroke-width: 2; }
+  .key { fill: #15803d; fill-opacity: .09; stroke: #15803d; stroke-width: 2.5; }
+  .alt { fill: #0e7490; fill-opacity: .08; stroke: #0e7490; stroke-width: 2.5; }
+  .warn { fill: #b45309; fill-opacity: .08; stroke: #b45309; stroke-width: 2; stroke-dasharray: 7 6; }
+  .head { font-size: 19px; font-weight: 700; }
+  .lede { font-size: 14.5px; fill: #56655c; }
+  .title { font-size: 16px; font-weight: 650; }
+  .sub { font-size: 13.5px; fill: #56655c; }
+  .field { font-size: 13.5px; font-weight: 650; fill: #15201a; }
+  .code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12.5px; fill: #15201a; }
+  .code-bg { fill: #f3f7f4; stroke: #d2ddd6; stroke-width: 1; }
+  .label { font-size: 13px; font-weight: 600; fill: #15201a; }
+  .edge { fill: none; stroke: #47564d; stroke-width: 2; marker-end: url(#arrow); }
+  .tag { fill: #f3f7f4; }
+  .arrowhead { fill: #47564d; }
+  .badge { fill: #15803d; }
+  .badge-text { font-size: 12px; font-weight: 700; fill: #f3f7f4; }
+  .dot { fill: #56655c; }
+  .ink { fill: none; stroke: #15201a; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .ink-key { fill: none; stroke: #15803d; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .ink-alt { fill: none; stroke: #0e7490; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .ink-warn { fill: none; stroke: #b45309; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+</style><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path class="arrowhead" d="M0 0L10 5L0 10z"/></marker></defs><rect class="bg" width="1062" height="412" rx="16"/><text class="head" x="24" y="36">Choose how a grant recognizes its app</text><text class="lede" x="24" y="60">a grant can match an app by its bundle id alone, by the certificate it's signed with, or by its exact build</text><rect class="box" x="24" y="92" width="322" height="296" rx="14"/><path class="ink" transform="translate(185 140)" d="M-20 -20h16l22 22l-16 16l-22 -22zM-11 -11a3 3 0 1 0 0.1 0"/><text class="title" x="185" y="180" text-anchor="middle">Bundle id only</text><rect class="code-bg" x="140.3" y="196" width="89.5" height="26" rx="6"/><text class="code" x="185" y="213.5" text-anchor="middle">no appPath</text><text class="field" x="46" y="246">Matches</text><text class="sub" x="46" y="264.9">any app with that bundle id</text><text class="field" x="46" y="290.9">Use for</text><text class="sub" x="46" y="309.8">apps as their developer signed them</text><text class="field" x="46" y="335.8">Survives</text><text class="sub" x="46" y="354.7">everything; nothing to re-pin</text><rect class="alt" x="370" y="92" width="322" height="296" rx="14"/><path class="ink-alt" transform="translate(531 140)" d="M-12 -9a12 12 0 1 0 24 0a12 12 0 1 0 -24 0zM-5 -9l3.5 3.5l7 -7M-9 1l-4 19l13 -6l13 6l-4 -19"/><text class="title" x="531" y="180" text-anchor="middle">Signing certificate</text><rect class="code-bg" x="455.9" y="196" width="150.3" height="26" rx="6"/><text class="code" x="531" y="213.5" text-anchor="middle">pin = "designated";</text><text class="field" x="392" y="246">Matches</text><text class="sub" x="392" y="264.9">builds from the same certificate</text><text class="field" x="392" y="290.9">Use for</text><text class="sub" x="392" y="309.8">apps you modify and re-sign</text><text class="field" x="392" y="335.8">Survives</text><text class="sub" x="392" y="354.7">app updates and re-signs</text><rect class="key" x="716" y="92" width="322" height="296" rx="14"/><path class="ink-key" transform="translate(877 140)" d="M-6 -20l-5 40M8 -20l-5 40M-17 -7h36M-19 7h36"/><text class="title" x="877" y="180" text-anchor="middle">Exact build</text><rect class="code-bg" x="815.4" y="196" width="123.3" height="26" rx="6"/><text class="code" x="877" y="213.5" text-anchor="middle">pin = "cdhash";</text><text class="field" x="738" y="246">Matches</text><text class="sub" x="738" y="264.9">this exact build and nothing else</text><text class="field" x="738" y="290.9">Use for</text><text class="sub" x="738" y="309.8">ad-hoc signed builds from Nix</text><text class="field" x="738" y="335.8">Survives</text><text class="sub" x="738" y="354.7">nothing; re-pinned on every rebuild</text></svg>
