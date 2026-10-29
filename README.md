@@ -118,7 +118,8 @@ Each entry of `apps`:
 
 | Field | Default | |
 |---|---|---|
-| `bundleId` | | The app's bundle identifier. |
+| `bundleId` | `""` | The app's bundle identifier. Set this or `path`. |
+| `path` | `null` | Absolute path of a command-line tool (TCC identifies unbundled binaries by path, so a bundle-id grant never matches them). Interpolate the package, `"${pkg}/bin/tool"`, so the grant follows rebuilds. |
 | `services` | `[ "Camera" "Microphone" ]` | Any of: Camera, Microphone, ScreenCapture, Accessibility, AppleEvents, InputMonitoring, PostEvent, AddressBook, Calendar, Reminders, Photos, SpeechRecognition, FullDiskAccess, DeveloperTool, DownloadsFolder, DesktopFolder, DocumentsFolder, Location, FocusStatus. |
 | `appPath` | `""` | Path to the `.app`. When set, the grant is pinned to its code signature. |
 | `pin` | `"designated"` | `"designated"` or `"cdhash"`; only used with `appPath`. |

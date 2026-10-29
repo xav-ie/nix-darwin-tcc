@@ -75,11 +75,14 @@ let
 
       services = lib.concatMapStringsSep "\n" (
         service:
-        "${tccGrant} --service ${service} --bundle-id ${app.bundleId} --db \"${dbFor service}\"${pinArg}"
+        if app.path != null then
+          "${tccGrant} --service ${service} --bundle-id \"${app.path}\" --client-type 1 --db \"${dbFor service}\""
+        else
+          "${tccGrant} --service ${service} --bundle-id ${app.bundleId} --db \"${dbFor service}\"${pinArg}"
       ) app.services;
     in
     ''
-      # ${app.bundleId}
+      # ${if app.path != null then app.path else app.bundleId}
       ${services}
     ''
   );
@@ -117,8 +120,26 @@ in
           options = {
             bundleId = lib.mkOption {
               type = lib.types.str;
-              description = "Application bundle identifier (e.g., org.whispersystems.signal-desktop)";
+              default = "";
+              description = ''
+                Application bundle identifier (e.g., org.whispersystems.signal-desktop).
+                Set this or `path`.
+              '';
               example = "org.whispersystems.signal-desktop";
+            };
+
+            path = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = ''
+                Absolute path of a command-line tool to grant instead of an app
+                bundle (TCC client type 1). TCC identifies unbundled binaries by
+                path, so a bundle-id grant never matches them. A store path
+                changes on every rebuild of the tool; interpolate the package
+                (`"''${pkg}/bin/tool"`) so the grant follows it. Pinning
+                (`appPath`/`pin`) doesn't apply.
+              '';
+              example = lib.literalExpression ''"''${pkgs.some-cli}/bin/some-cli"'';
             };
 
             appPath = lib.mkOption {
@@ -221,7 +242,10 @@ in
   };
 
   config = lib.mkIf (cfg.enable && cfg.apps != [ ]) {
-    assertions = [
+    assertions = map (app: {
+      assertion = (app.bundleId != "") != (app.path != null);
+      message = "security.tcc.apps: set exactly one of bundleId or path (got bundleId=\"${app.bundleId}\", path=${toString app.path})";
+    }) cfg.apps ++ [
       {
         assertion = cfg.user != null;
         message = "security.tcc.user must be set (it defaults to system.primaryUser, which is unset).";

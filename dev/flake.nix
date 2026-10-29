@@ -64,6 +64,10 @@
                       pin = "cdhash";
                       services = [ "Accessibility" ];
                     }
+                    {
+                      path = "/nix/store/example-cli/bin/example-cli";
+                      services = [ "ScreenCapture" ];
+                    }
                   ];
                 };
               }
@@ -83,6 +87,7 @@
             # The cdhash-pinned grant is written before launchd reloads agents,
             # everything else after.
             grep -q 'bundle-id com.example.daemon .*--app-path' pre
+            grep -q 'bundle-id "/nix/store/example-cli/bin/example-cli" --client-type 1' post
             ! grep -q 'com.example.daemon' post
             grep -q 'bundle-id org.mozilla.firefox .*--designated-from' post
             grep -q 'bundle-id org.whispersystems.signal-desktop' post
