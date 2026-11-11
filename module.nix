@@ -87,8 +87,20 @@ let
     ''
   );
 
+  # macOS 27 keeps the per-user db in a containermanagerd ProtectedSystem
+  # container (random UUID, owned by the user) instead of ~/Library; older
+  # releases use ~/Library. Resolve at activation time: the ~/Library path
+  # if it exists, else the user-owned container holding a TCC.db.
   dbVars = lib.removeSuffix "\n" ''
     USER_TCC_DB="${home}/Library/Application Support/com.apple.TCC/TCC.db"
+    if [ ! -e "$USER_TCC_DB" ]; then
+      for tcc_db in /private/var/containers/Data/ProtectedSystem/*/Data/Library/Application\ Support/com.apple.TCC/TCC.db; do
+        if [ -e "$tcc_db" ] && [ "$(/usr/bin/stat -f %Su "$tcc_db")" = "${cfg.user}" ]; then
+          USER_TCC_DB="$tcc_db"
+          break
+        fi
+      done
+    fi
     SYS_TCC_DB="/Library/Application Support/com.apple.TCC/TCC.db"
   '';
 in
